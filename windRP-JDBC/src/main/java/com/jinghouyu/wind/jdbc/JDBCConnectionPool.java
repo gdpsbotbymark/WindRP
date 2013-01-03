@@ -27,10 +27,6 @@ public class JDBCConnectionPool {
 		windRPool.setNumberChooser(numberChooser);
 	}
 	
-	public void setConnectionHolder(ConnectionHolder connectionHolder) {
-		windRPool.setResourceHolder(connectionHolder);
-	}
-	
 	public JDBCConnectionPool(RPConfig config, ResourceHolder<Connection> resourceHolder) throws ResourceBuildException {
 		windRPool = new WindRPool<Connection>(resourceHolder);
 		windRPool.setConfig(config);

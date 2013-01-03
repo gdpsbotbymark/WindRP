@@ -56,7 +56,7 @@ public class Partition<T> {
 		if(resourceEntry == null) {
 			return null;
 		}
-		if(resourceEntry.getCreated().before(expiredDate)) {
+		if(resourceEntry.getIdleDate().before(expiredDate)) {
 			currentSize.addAndGet(-1);
 			try {
 				((Resource) resourceEntry.getResource()).releaseRealResource();
@@ -70,10 +70,10 @@ public class Partition<T> {
 	}
 	
 	ResourceEntry<T> getResource() throws ResourceBuildException {
+		ResourceEntry<T> resourceEntry;
 		if(avails.size() > 0) {   //if avail resource is exists
 			synchronized(this) {
 				if(avails.size() > 0) {
-					ResourceEntry<T> resourceEntry;
 					if(this.idleMaxTime < 0) {
 						resourceEntry = avails.poll();
 					} else {
@@ -82,7 +82,6 @@ public class Partition<T> {
 					}
 					if(resourceEntry != null) {
 						busies.add(resourceEntry);
-						return resourceEntry;
 					}
 				}
 			}
@@ -90,10 +89,9 @@ public class Partition<T> {
 		if(currentSize.get() < maxResourceCountPerPartition) {  //if it has not reached up to the max count;
 			synchronized(this) {
 				if(currentSize.get() < maxResourceCountPerPartition) {
-					ResourceEntry<T> resourceEntry = resourceHolder.buildResource(this);
+					resourceEntry = resourceHolder.buildResource(this);
 					busies.add(resourceEntry);
 					currentSize.incrementAndGet();
-					return resourceEntry;
 				}
 			}
 		}
@@ -134,5 +132,6 @@ public class Partition<T> {
 			busies.remove(resourceEntry);
 			avails.add(resourceEntry);
 		}
+		resourceEntry.setIdleDate(new Date());
 	}
 }

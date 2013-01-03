@@ -24,7 +24,7 @@ public final class ResourceEntry<T> {
 	
 	private Partition<T> partition;
 	
-	private Date created = new Date();
+	private Date idleDate = new Date();
 	
 	public ResourceEntry(Partition<T> partition, T resource) {
 		this.resource = resource;
@@ -40,10 +40,14 @@ public final class ResourceEntry<T> {
 		return this.resource;
 	}
 	
-	public Date getCreated() {
-		return this.created;
+	public Date getIdleDate() {
+		return idleDate;
 	}
-	
+
+	void setIdleDate(Date idleDate) {
+		this.idleDate = idleDate;
+	}
+
 	Partition<T> getPartition() {
 		return partition;
 	}
