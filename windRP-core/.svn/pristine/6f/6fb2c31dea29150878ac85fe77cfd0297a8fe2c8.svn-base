@@ -70,7 +70,7 @@ public class Partition<T> {
 	}
 	
 	ResourceEntry<T> getResource() throws ResourceBuildException {
-		ResourceEntry<T> resourceEntry = null;
+		ResourceEntry<T> resourceEntry;
 		if(avails.size() > 0) {   //if avail resource is exists
 			synchronized(this) {
 				if(avails.size() > 0) {
@@ -95,7 +95,7 @@ public class Partition<T> {
 				}
 			}
 		}
-		return resourceEntry;
+		return null;
 	}
 	
 	ResourceEntry<T> getResource(Long waitTime, TimeUnit unit) throws ResourceBuildException {

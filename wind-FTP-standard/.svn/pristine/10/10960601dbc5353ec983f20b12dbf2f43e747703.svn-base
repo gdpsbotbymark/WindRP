@@ -1,8 +1,6 @@
 package org.jinghouyu.wind.ftp;
 
 import java.io.Closeable;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -33,7 +31,7 @@ public interface FtpClient extends Closeable {
 	 * @param serverPath      the path of server where you want to put file to.
 	 * @throws FtpException   if error occurs, FtpException will be thrown up.
 	 */
-	void upload(String localPath, String serverPath) throws FtpException, IOException, FileNotFoundException;
+	void upload(String localPath, String serverPath) throws FtpException;
 	
 	/**
 	 * upload local stream to Ftp serve
@@ -41,7 +39,7 @@ public interface FtpClient extends Closeable {
 	 * @param serverPath       the path of server where you want to put data to.
 	 * @throws FtpException    if error occurs, FtpException will be thrown up.
 	 */
-	void upload(InputStream inputStream, String serverPath) throws FtpException, IOException;
+	void upload(InputStream inputStream, String serverPath) throws FtpException;
 	
 	/**
 	 * download a file of server to localPath
@@ -49,7 +47,7 @@ public interface FtpClient extends Closeable {
 	 * @param localPath           the local path where you want to put data to.
 	 * @throws FtpException       if error occurs, FtpException will be thrown up.
 	 */
-	void download(String serverPath, String localPath) throws FtpException, IOException, FileNotFoundException;
+	void download(String serverPath, String localPath) throws FtpException;
 	
 	/**
 	 * download a file of server to an outputstream
@@ -57,36 +55,48 @@ public interface FtpClient extends Closeable {
 	 * @param out                the outputstream which you want to put data to.
 	 * @throws FtpException      if error occurs, FtpException will be thrown up.
 	 */
-	void download(String serverPath, OutputStream out) throws FtpException, IOException;
+	void download(String serverPath, OutputStream out) throws FtpException;
+	
+	/**
+	 * get the ouputstream of a server path into which we can put data.
+	 * @param serverPath        the server path.
+	 * @return
+	 * @throws FtpException     if error occurs, FtpException will be thrown up.
+	 */
+	OutputStream getOutputStream(String serverPath) throws FtpException;
 	
 	/**
 	 * make a directory.
 	 * @param dir			   directory path
 	 * @throws FtpException    if error occurs, FtpException will be thrown up.
 	 */
-	void mkdir(String dir) throws FtpException, IOException;
+	void mkdir(String dir) throws FtpException;
+	
+	/**
+	 * make a directory with recursion mode.
+	 * @param dir               directory path
+	 * @throws FtpException     if error occurs, FtpException will be thrown up.
+	 */
+	void mkdirs(String dir) throws FtpException;
 	
 	/**
 	 * remove a file
 	 * @param filePath           file path
 	 * @throws FtpException      if error occurs, FtpException will be thrown up.
 	 */
-	void rmFile(String filePath) throws FtpException, IOException;
+	void rmFile(String filePath) throws FtpException;
 	
 	/**
 	 * remove a directory
 	 * @param dirPath          directory path
 	 * @throws FtpException    if error occurs, FtpException will be thrown up.
 	 */
-	void rmDir(String dirPath) throws FtpException, IOException;
-	
-	/**
-	 * get sub files info from the remote server
-	 * @param serverPath
-	 * @return
-	 * @throws FtpException
-	 * @throws IOException
-	 */
-	FtpFile[] getFiles(String serverPath) throws FtpException, IOException;
+	void rmDir(String dirPath) throws FtpException;
 
+	/**
+	 * remove a directory with recursion mode.
+	 * @param dirPath
+	 * @throws FtpException
+	 */
+	void rmDirDeeply(String dirPath) throws FtpException;
 }

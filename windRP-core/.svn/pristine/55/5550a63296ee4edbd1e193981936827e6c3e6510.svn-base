@@ -31,7 +31,7 @@ public class RPConfig {
 	
 	private TimeUnit idleMaxTimeUnit = TimeUnit.SECONDS;
 	
-	private long waitTime = -1;
+	private long waitTime = 10;
 	
 	private TimeUnit timeUnit = TimeUnit.SECONDS;
 	
