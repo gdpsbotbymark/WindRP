@@ -142,5 +142,7 @@ public class Partition<T> {
 		} else {
 			resourceEntry.setIdleDate(new Date(System.currentTimeMillis()));
 		}
+		avails.add(resourceEntry);
+		resourceEntry.setIdleDate(new Date());
 	}
 }

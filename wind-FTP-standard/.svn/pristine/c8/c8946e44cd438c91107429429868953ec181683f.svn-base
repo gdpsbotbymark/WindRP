@@ -21,7 +21,7 @@ public class FtpProxy implements InvocationHandler {
 	
 	private FtpProxy(FtpClient client, Partition<FtpClient> partition) {
 		this.client = client;
-		FtpClient proxy = (FtpClient) Proxy.newProxyInstance(client.getClass().getClassLoader(), new Class[] {FtpClient.class}, this);
+		FtpClient proxy = (FtpClient) Proxy.newProxyInstance(client.getClass().getClassLoader(), client.getClass().getInterfaces(), this);
 		resourceEntry = new ResourceEntry<FtpClient>(partition, proxy);
 		this.partition = partition;
 	}
@@ -35,7 +35,6 @@ public class FtpProxy implements InvocationHandler {
 		String methodName = method.getName();
 		if("close".equals(methodName)) {
 			resourceEntry.release();
-			return null;
 		}
 		try {
 			return method.invoke(client, args);
@@ -48,8 +47,7 @@ public class FtpProxy implements InvocationHandler {
 					partition.getPool().releaseAndRemoveAll();
 					break;
 				case REMOTE_DISCONNECTED :
-					resourceEntry.destroy();
-					break;
+					resourceEntry.release();
 				}
 			}
 			throw e;
