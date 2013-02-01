@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.jinghouyu.windRP.RPConfig;
-import org.jinghouyu.windRP.ResourceHolder;
 import org.jinghouyu.windRP.WindRPool;
 import org.jinghouyu.windRP.exception.ResourceException;
 import org.jinghouyu.windRP.interf.NumberChooser;
@@ -28,8 +27,8 @@ public class JDBCConnectionPool {
 		windRPool.setNumberChooser(numberChooser);
 	}
 	
-	public JDBCConnectionPool(RPConfig config, ResourceHolder<Connection> resourceHolder) throws SQLException {
-		windRPool = new WindRPool<Connection>(resourceHolder);
+	public JDBCConnectionPool(RPConfig config, ConnectionHolder connectionHolder) throws SQLException {
+		windRPool = new WindRPool<Connection>(connectionHolder);
 		try {
 			windRPool.setConfig(config);
 		} catch (ResourceException e) {
